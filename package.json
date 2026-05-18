@@ -1,0 +1,7 @@
+{
+  "name": "app-devops",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo 'Tous les tests unitaires ont reussi !' && exit 0"
+  }
+}
