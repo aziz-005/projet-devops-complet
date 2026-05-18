@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('1. Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/VOTRE_USERNAME/projet-devops-complet.git'
+                git branch: 'main', url: 'https://github.com/aziz-005/projet-devops-complet.git'
             }
         }
         stage('2. Test') {
