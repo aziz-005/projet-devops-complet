@@ -23,11 +23,19 @@ pipeline {
         
         stage('4. Deploy Kubernetes') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                script {
                     bat '''
-                        xcopy /Y C:\Users\LENOVO\.kube\config %WORKSPACE%\.kube\ 2>nul || echo "Copy impossible"
-                        set KUBECONFIG=%WORKSPACE%\.kube\config
-                        kubectl apply -f k8s.yaml 2>&1 || echo "⚠️ Deploy manuel necessaire - cluster accessible uniquement en local"
+                        if exist C:\\Users\\LENOVO\\.kube\\config (
+                            mkdir %WORKSPACE%\\.kube 2>nul
+                            copy C:\\Users\\LENOVO\\.kube\\config %WORKSPACE%\\.kube\\config >nul
+                            set KUBECONFIG=%WORKSPACE%\\.kube\\config
+                            kubectl apply -f k8s.yaml
+                            kubectl rollout status deployment/devops-app
+                            echo "✅ Deploiement Kubernetes reussi !"
+                        ) else (
+                            echo "⚠️  Configuration Kubernetes non trouvee"
+                            exit 0
+                        )
                     '''
                 }
             }
