@@ -1,31 +1,32 @@
 pipeline {
     agent any
     stages {
-        stage('1. Clone') {
+        stage('1. Test de l application') {
             steps {
-                git branch: 'main', url: 'https://github.com/aziz-005/projet-devops-complet.git'
+                // Utilisation de 'bat' pour Windows
+                bat 'npm install && npm test'
             }
         }
-        stage('2. Test') {
+        
+        stage('2. Analyse de Code (SonarQube)') {
             steps {
-                sh 'npm install && npm test'
+                echo 'Analyse du code en cours...'
+                // Commande de pause compatible Windows
+                bat 'ping 127.0.0.1 -n 4 > nul' 
             }
         }
-        stage('3. SonarQube') {
+        
+        stage('3. Build de l image Docker') {
             steps {
-                echo 'Analyse du code en cours sur SonarQube...'
-                // Simulation rapide si SonarQube rame sur votre PC :
-                sh 'sleep 3' 
+                // Utilisation de 'bat' pour Windows
+                bat 'docker build -t devops-app:latest .'
             }
         }
-        stage('4. Docker Build') {
+        
+        stage('4. Deploiement Kubernetes') {
             steps {
-                sh 'docker build -t devops-app:latest .'
-            }
-        }
-        stage('5. Deploy K8s') {
-            steps {
-                sh 'kubectl apply -f k8s.yaml'
+                // Utilisation de 'bat' pour Windows
+                bat 'kubectl apply -f k8s.yaml'
             }
         }
     }
